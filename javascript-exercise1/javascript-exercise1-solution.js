@@ -1,15 +1,7 @@
-function selectAll(){
-  var checkboxes = document.getElementsByTagName("input");
-  //Iterate over the checkboxes and mark checked property as true
+function selectAllOrNone(allOrNone){
+  var checkboxes = document.querySelectorAll("input[type='checkbox']");
+  //Iterate over the checkboxes and mark checked property as true or false
   for(var j = checkboxes.length-1; j>=0; j--){
-    checkboxes[j].checked = true;
-  }
-}
-
-function selectNone(){
-  var checkboxes = document.getElementsByTagName("input");
-  //Iterate over the checkboxes and mark checked property as false
-  for(var j = checkboxes.length-1; j>=0; j--){
-    checkboxes[j].checked = false;
+    checkboxes[j].checked = allOrNone;
   }
 }
