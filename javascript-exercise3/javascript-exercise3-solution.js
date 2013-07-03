@@ -18,11 +18,11 @@ function addOrEditContact(contactId) {
   nameInput.setAttribute("type" , "text");
   nameInput.setAttribute("autofocus" , true);
   //Email input is created and its attributes are set
-  var emailInput =  document.createElement("input");
+  var emailInput = document.createElement("input");
   emailInput.setAttribute("name" , "contact-email");
   emailInput.setAttribute("type" , "email");
   //Save button is created and its onclick function is set
-  var saveButton =  document.createElement("button");
+  var saveButton = document.createElement("button");
   saveButton.setAttribute("name" , "contact-button");
   saveButton.setAttribute("onclick" , "addContact(this);");
   saveButton.innerHTML = "Save";
