@@ -38,6 +38,9 @@ function addOrEditContact(contactId) {
   newTableCell2.appendChild(emailInput);
   var newTableCell3 = newTableRow.appendChild(document.createElement("td"));
   newTableCell3.appendChild(saveButton);
+  if (contactId instanceof Object) {
+    return false;
+  }
 }
 
 function addContact(contactId) {
@@ -53,11 +56,12 @@ function addContact(contactId) {
   contactName.outerHTML = contactName.value;
   contactEmail.outerHTML = contactEmail.value;
   //Replacing Save button with Edit/ Delete links 
-  contactId.outerHTML = "<a href='javascript:void(0);' onclick='addOrEditContact(this)'>Edit</a> / <a href='javascript:void(0);' onclick='deleteContact(this)'>Delete</a>";
+  contactId.outerHTML = "<a href='#' onclick='return addOrEditContact(this)'>Edit</a> / <a href='#' onclick='return deleteContact(this)'>Delete</a>";
 }
 
 function deleteContact(contactId) {
   //Extracting Row to be deleted from the link and removing that row
   var contactRow = contactId.parentNode.parentNode;
   contactRow.parentNode.removeChild(contactRow);
+  return false;
 }
