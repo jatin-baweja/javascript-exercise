@@ -26,7 +26,7 @@ function Favourites(existingId, childId, favouriteChoices) {
 }
 
 Favourites.prototype.showHideChildCheckboxes = function() {
-  //
+  //Find child checkboxes and make their checked value same as parent checkbox
   var parentCheckbox = document.getElementById(this.existingId);
   var checkedValue = parentCheckbox.checked;
   var childList = document.getElementById(this.childId);
@@ -35,10 +35,13 @@ Favourites.prototype.showHideChildCheckboxes = function() {
   for (var i = childCheckboxes.length - 1; i >= 0; i--) {
     childCheckboxes[i].checked = checkedValue;
   }
+  // Change the child list display property to none or block
   childList.style = "display:" + blockValue;
+  //Move to child list to avoid scrolling
   document.location.hash = this.childId;
 }
 
+//Initialise the objects
 var color = new Favourites("color","colors", ["red", "yellow", "green", "blue"]);
 var movie = new Favourites("movie","movies", ["Dar", "Sir"]);
 var drink = new Favourites("drink","drinks", ["coke", "pepsi", "dew"]);
