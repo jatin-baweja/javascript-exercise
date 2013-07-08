@@ -1,4 +1,4 @@
-var urlToOpen = prompt("Enter URL (www.abc.com OR abc.com):", "");
+var urlToOpen = prompt("Enter URL (eg. www.abc.com OR abc.com):", "");
 console.log(urlToOpen);
 if (urlToOpen != null && urlToOpen != "") {
   urlToOpen = "http://" + urlToOpen;
