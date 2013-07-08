@@ -1,7 +1,7 @@
 //Function to display Prompt
 function enterName(namePosition) {
   var nameValue = prompt("Enter your " + namePosition + " name :", "");
-  nameCorrect = false;
+  var nameCorrect = false;
   if (nameValue != null) {
     for (var i = 0, j = nameValue.length; i < j; i++) {
       if (nameValue.charCodeAt(i) != 32) {
