@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Form Validation
+    </title>
+    <link rel="stylesheet" type="text/css" href="form.css" />
+  </head>
+  <body>
+    <div id="box-head">
+      Registration Form
+    </div>
+    <div id="box" >
+      <div id="inner-form" >
+        <form id="registration" name="registration" action="" method="get">
+          <div id="login-id-input" class="split" >
+            <div id="login-id-text"  class="tag">
+              <label for="login-id" >Login Id</label>
+            </div>
+            <div id="login-id-box" class="formelement">
+              <input type="text" name="login-id" id="login-id" />
+            </div>
+          </div>
+          <div id="email-input" class="split" >
+            <div id="email-text"  class="tag">
+              <label for="email" >Email</label>
+            </div>
+            <div id="email-box" class="formelement">
+              <input type="email" name="email" id="email" />
+            </div>
+          </div>
+          <div id="name-input" class="split" >
+            <div id="name-text" class="tag">
+              <label for="name" >Name</label>
+            </div>
+            <div id="name-text-box" class="formelement">
+              <input type="text" name="name" id="name" />
+            </div>
+          </div>
+            <div id="timezone-input" class="split" >
+              <div id="timezone-text" class="tag" >
+                <label for="timezone" >Timezone</label>
+              </div>
+              <div id="timezone-select" class="formelement" >
+                <select name="timezone" id="timezone" >
+                  <option value="-12.0">GMT -12:00</option>
+                  <option value="-11.0">GMT -11:00</option>
+                  <option value="-10.0">GMT -10:00</option>
+                  <option value="-9.0">GMT -9:00</option>
+                  <option value="-8.0">GMT -8:00</option>
+                  <option value="-7.0">GMT -7:00</option>
+                  <option value="-6.0">GMT -6:00</option>
+                  <option value="-5.0">GMT -5:00</option>
+                  <option value="-4.0">GMT -4:00</option>
+                  <option value="-3.5">GMT -3:30</option>
+                  <option value="-3.0">GMT -3:00</option>
+                  <option value="-2.0">GMT -2:00</option>
+                  <option value="-1.0">GMT -1:00</option>
+                  <option value="0.0" selected>GMT</option>
+                  <option value="1.0">GMT +1:00</option>
+                  <option value="2.0">GMT +2:00</option>
+                  <option value="3.0">GMT +3:00</option>
+                  <option value="3.5">GMT +3:30</option>
+                  <option value="4.0">GMT +4:00</option>
+                  <option value="4.5">GMT +4:30</option>
+                  <option value="5.0">GMT +5:00</option>
+                  <option value="5.5">GMT +5:30</option>
+                  <option value="5.75">GMT +5:45</option>
+                  <option value="6.0">GMT +6:00</option>
+                  <option value="7.0">GMT +7:00</option>
+                  <option value="8.0">GMT +8:00</option>
+                  <option value="9.0">GMT +9:00</option>
+                  <option value="9.5">GMT +9:30</option>
+                  <option value="10.0">GMT +10:00</option>
+                  <option value="11.0">GMT +11:00</option>
+                  <option value="12.0">GMT +12:00</option>
+                </select>
+              </div>
+            </div>
+          <div id="home-page-input" class="split" >
+            <div id="home-page-text"  class="tag">
+              <label for="home-page" >Home Page</label>
+            </div>
+            <div id="home-page-text-box" class="formelement">
+              <input type="text" name="home-page" id="home-page" />
+            </div>
+          </div>
+          <div id="about-me-input" class="split" >
+            <div id="about-me-text"  class="tag">
+              <label for="about-me" >About Me</label>
+            </div>
+            <div id="about-me-text-box" class="split">
+              <textarea name="about-me" id="about-me"></textarea>
+            </div>
+          </div>
+          <div id="receive-notifications-input" class="split" >
+            <div id="receive-notifications-box" class="formelement">
+              <input type="checkbox" name="notifications" id="notifications" />
+              <label for="notifications" >Receive notification of comments</label>
+            </div>
+            <div id="receive-notifications-info" class="formelement">
+              You will be sent an email when someone posts comments to your Blog or Album.
+            </div>
+          </div>
+          <div id="submit-button-box" class="split" >
+            <div id="submit-button-text" class="formelement">
+              Your password will be mailed to you.
+            </div>
+            <div id="submit-button" class="formelement">
+              <input id="go-button" type="submit" name="go-button" value="Go" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/javascript" src="form-validation.js" ></script>
+  </body>
+</html>
