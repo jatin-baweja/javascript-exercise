@@ -1,13 +1,9 @@
 window.onload = function() {
   //move Selected Items from one selection box to the other
   function moveSelectedOptions(originSelection, destinationSelection){
-    var option = null;
-    for (var i=0, j=originSelection.options.length; i < j; i++) {
-      option = originSelection.options[i];
-      if (option.selected) {
-        destinationSelection.appendChild(option);
-        i--, j--;
-      }
+    while (originSelection.selectedIndex !== -1) {
+      option = originSelection.options[originSelection.selectedIndex];
+      destinationSelection.add(option,undefined);
     }
   }
   //Initialize Selection Boxes
