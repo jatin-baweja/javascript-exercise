@@ -1,0 +1,90 @@
+#box-head {
+  color:#FFFFFF;
+  background-color:#669900;
+  width:500px;
+  margin:0 auto;
+  text-align:center;
+}
+
+#box {
+  width:500px;
+  background-color:#E6FFCC;
+  margin:0 auto;
+}
+
+#inner-form {
+  display:inline;
+  margin:10px 10px 10px 10px;
+}
+
+.split {
+  width:500px;
+}
+
+.tag {
+  display:inline-block;
+  width:100px;
+  text-align:left;
+  padding-left:10px;
+  font-family:Tahoma;
+  font-size:14px;
+  color:black;
+  padding-top:5px;
+  font-weight:bold;
+}
+
+.split .formelement {
+  padding-left:10px;
+}
+
+.formelement {
+  display:inline-block;
+  width:370px;
+  text-align:left;
+  padding-top:5px;
+}
+
+#receive-notifications-box {
+  font-weight:bold;
+  font-size:14px;
+}
+
+#receive-notifications-info {
+  width:100%;
+  font-size: 13px;
+}
+
+input[type="text"], input[type="email"] , select {
+  background-color:white;
+  border:1px solid green;
+}
+
+.formelement select {
+  width:110px;
+  margin-right:5px;
+}
+
+.split textarea {
+  margin-left:10px;
+  background-color:white;
+  border:1px solid green;
+  width:480px;
+  height:135px;
+}
+
+#submit-button-box {
+  text-align:center;
+  font-size:14px;
+}
+
+#submit-button {
+  text-align:center;
+}
+
+#name, #email {
+  background-color:yellow;
+}
+
+#submit-button-text {
+  text-align:center;
+}
