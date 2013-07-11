@@ -40,7 +40,7 @@ function FormValidation(forms) {
     }
   }
   //Put a Form submit Event Listener
-  this.forms.formId.addEventListener("submit",this.FormChecker,false);
+  this.forms.formId.addEventListener("submit", this.FormChecker, false);
 }
 
 //Initialise the objects
