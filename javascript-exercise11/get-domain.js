@@ -16,13 +16,15 @@ function DomainMatching(form) {
       alert("Please enter a URL only!");
       }
     else {
+      //Extract HostName
       var hostName = RegExp.$4;
+      //Extract Domain Name and Subdomain
       if(pattern.hostNamePattern.test(hostName)) {
         var subDomain = RegExp.$2;
         var domainName = RegExp.$3;
       }
       var subDomainString = "";
-      if(typeof subDomain == "string") {
+      if(typeof subDomain == "string" && subDomain != "") {
         subDomainString = ", Subdomain : " + subDomain;
         }
       alert("Domain : " + domainName + subDomainString);
@@ -33,4 +35,4 @@ function DomainMatching(form) {
   this.form.formRoot.addEventListener("submit", this.obtainDomain, false);
 }
 //Initialise the objects
-var numericFormValidation = new DomainMatching(form);
+var domainValidation = new DomainMatching(form);
