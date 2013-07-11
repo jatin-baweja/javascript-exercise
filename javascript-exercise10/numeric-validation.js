@@ -1,7 +1,7 @@
 var forms = {
   formId : document.getElementById("numeric-form"),
   numberField : document.getElementById("number"),
-  resultField : document.getElementById("result"),
+  resultField : document.getElementById("result")
 };
 
 function FormValidation(forms) {
@@ -21,7 +21,7 @@ function FormValidation(forms) {
       }
   }
   //Put a Form submit Event Listener
-  this.forms.formId.addEventListener("submit",this.NumericChecker,false);
+  this.forms.formId.addEventListener("submit", this.NumericChecker, false);
 }
 //Initialise the objects
 var numericFormValidation = new FormValidation(forms);
