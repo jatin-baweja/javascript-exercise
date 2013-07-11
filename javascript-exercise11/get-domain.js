@@ -4,8 +4,7 @@ var form = {
 };
 //To Store All Regex patterns
 var pattern = {
-  urlPattern : /^((http|https|ftp):\/\/)?(www.)?([\w.-]+\.[a-z]{2,4})([\/][\w%.-]+)*(\/)?([#][\w9%-]+)?([\?][\w%.]+\=[\w%]+)?(&[\w%.]+\=[\w%.]*)*$/i,
-  hostNamePattern : /^(([\w.-]+)[.])?([\w-]+\.[a-z]{2,4})$/i
+  urlPattern : /^((http|https|ftp):\/\/)?(www.)?(([\w.-]+)[.])?([\w-]+\.[a-z]{2,4})([\/][\w%.-]+)*(\/)?([#][\w9%-]+)?([\?][\w%.]+\=[\w%]+)?(&[\w%.]+\=[\w%.]*)*$/i
 };
 //Domain Matching Class
 function DomainMatching(form) {
@@ -16,13 +15,8 @@ function DomainMatching(form) {
       alert("Please enter a URL only!");
       }
     else {
-      //Extract HostName
-      var hostName = RegExp.$4;
-      //Extract Domain Name and Subdomain
-      if(pattern.hostNamePattern.test(hostName)) {
-        var subDomain = RegExp.$2;
-        var domainName = RegExp.$3;
-      }
+      var subDomain = RegExp.$5;
+      var domainName = RegExp.$6;
       var subDomainString = "";
       if(typeof subDomain == "string" && subDomain != "") {
         subDomainString = ", Subdomain : " + subDomain;
