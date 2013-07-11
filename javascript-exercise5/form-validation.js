@@ -1,6 +1,6 @@
 var forms = {
   formId : document.getElementById("registration"),
-  notifications : document.getElementById("notifications"),
+  notifications : document.getElementById("notifications")
 };
 
 function FormValidation(forms) {
