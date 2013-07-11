@@ -1,13 +1,13 @@
 var forms = {
   formId : document.getElementById("url-form"),
-  urlField : document.getElementById("url"),
+  urlField : document.getElementById("url")
 };
 
 function DomainMatching(forms) {
   this.forms = forms;
   
   this.obtainDomain = function(e) {
-    //Number Pattern
+    //Url Pattern
     var urlPattern = /^((http|https|ftp):\/\/)?(www.)?([\w.-]+\.[a-z]{2,4})([\/][\w%.-]+)*(\/)?([#][\w9%-]+)?([\?][\w%.]+\=[\w%]+)?(&[\w%.]+\=[\w%.]*)*$/i;
     //Check if pattern matches
     if(!urlPattern.test(forms.urlField.value)) {
@@ -28,7 +28,7 @@ function DomainMatching(forms) {
       e.preventDefault();
   }
   //Put a Form submit Event Listener
-  this.forms.formId.addEventListener("submit",this.obtainDomain,false);
+  this.forms.formId.addEventListener("submit", this.obtainDomain, false);
 }
 //Initialise the objects
 var numericFormValidation = new DomainMatching(forms);
