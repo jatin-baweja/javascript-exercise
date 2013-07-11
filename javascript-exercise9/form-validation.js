@@ -1,6 +1,6 @@
 var forms = {
   formId : document.getElementById("registration"),
-  notifications : document.getElementById("notifications"),
+  notifications : document.getElementById("notifications")
 };
 
 function FormValidation(forms) {
@@ -60,7 +60,7 @@ function FormValidation(forms) {
     }
   }
   //Put a Form submit Event Listener
-  this.forms.formId.addEventListener("submit",this.FormChecker,false);
+  this.forms.formId.addEventListener("submit", this.FormChecker, false);
 }
 //Function to get label of input field
 function getLabel(field) {
