@@ -13,24 +13,29 @@ var patterns = {
   emailPattern : /^[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
   urlPattern : /^((http|https):\/\/)?(www.)?[\w.-]+\.[a-z]{2,4}([\/][\w%.-]+)*(\/)?([#][\w9%-]+)?([\?][\w%.]+\=[\w%]+)?(&[\w%.]+\=[\w%.]*)*$/i
 };
+//To output error message
+function outputError(field, messageToOutput, event){
+  alert(messageToOutput);
+  field.focus();
+  event.preventDefault();
+  return false;
+}
 //To check if a form field is empty
 function isEmptyField(field, event) {
   var fieldName = form.getElementLabel(field);
-  if (field.value == "") {
-    alert(fieldName + " cannot be empty.");
-    field.focus();
-    event.preventDefault();
-    return true;
+  var trimmedFieldValue = field.value.trim();
+  var errorMessage = fieldName + " cannot be empty.";
+  if (field.value == "" || trimmedFieldValue == "") {
+    return !outputError(field, errorMessage, event);
   }
   return false;
 }
 //To check if a form field is valid
 function isValidField(patternToMatch, field, event) {
   var fieldName = form.getElementLabel(field);
+  var errorMessage = "Please enter correct " + fieldName + "!";
   if(!patternToMatch.test(field.value)) {
-    alert("Please enter correct " + fieldName + "!");
-    event.preventDefault();
-    return false;
+    return outputError(field, errorMessage, event);
   }
   return true;
 }
@@ -39,7 +44,7 @@ function FormValidation(form) {
   this.form = form;
   this.validateForm = function(event) {
     //Get all input text boxes
-    var elements = form.formRoot.querySelectorAll("input[type='text'], input[type='email'], input[type='url']");
+    var elements = form.formRoot.querySelectorAll(".textinput");
     //Check each textbox to see if it's empty or not
     for (var i = 0, j = elements.length; i < j; i++) {
       if(isEmptyField(elements[i], event)) {
@@ -55,15 +60,14 @@ function FormValidation(form) {
     }
     //Get textarea
     var textArea = form.formRoot.querySelector("textarea");
-    //Define Minimum Textarea Length
-    var minLength = 50, minLengthMessage = "";
+    //Define Minimum Textarea Length, Textarea Name and Error Messages
+    var textAreaName = form.getElementLabel(textArea);
+    var minLength = 50, minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.", blankInputMessage = textAreaName + " cannot be empty or blank.";
+    if (textArea.value.trim() == "") {
+      return outputError(textArea, blankInputMessage, event);
+    }
     if (textArea.value.length < minLength) {
-      var textAreaName = form.getElementLabel(textArea);
-      minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.";
-      alert(minLengthMessage);
-      textArea.focus();
-      event.preventDefault();
-      return false;
+      return outputError(textArea, minLengthMessage, event);
     }
     //Check receive notifications
     var doOrDont = form.notificationsElement.checked ? "" : "don\'t ";
