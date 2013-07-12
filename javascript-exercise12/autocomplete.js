@@ -2,9 +2,8 @@ var form = {
   formRoot : document.getElementById("autocomplete-form"),
   nameField : document.getElementById("name")
 };
-var patterns = {
-
-function createXHR()  {
+/*
+function createXHR() {
   if(typeof XMLHttpRequest != "undefined") {
     return new XMLHttpRequest();
   } else if(typeof ActiveXObject != "undefined") {
@@ -25,13 +24,33 @@ function createXHR()  {
     throw new Error("No XHR Object Available");
   }
 }
+*/
+
 function JsonAutocompleter(form) {
   this.form = form;
   this.autocompleteText = function(e) {
-    var xhr = createXHR();
+    var usersCopy = JSON.parse(users, function(key,value) {
+      return value;
+    });
+    alert(usersCopy);
+
+/*    var xhr = createXHR();
+//    var displayList = form.nameField.parentNode.appendChild(document.createElement("ul"));
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState == 4) {
+        if(xhr.status >=200 && xhr.status < 300 || xhr.status == 304) {
+          alert(xhr.responseText);
+        } else {
+          alert("Request was unsuccessful : " + xhr.status);
+        }
+      }
+    }
+    xhr.open("get","user.json",true);
+    xhr.send(null);
+*/
   }
   //Put a Form submit Event Listener
-  this.forms.nameField.addEventListener("keyup", this.autocompleteText, false);
+  this.form.nameField.addEventListener("keyup", this.autocompleteText, false);
 }
 //Initialise the objects
 var textAutocompleter = new JsonAutocompleter(form);
