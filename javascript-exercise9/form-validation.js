@@ -3,6 +3,7 @@ var form = {
   notificationsElement : document.getElementById("notifications"),
   emailField : document.getElementById("email"),
   homePageField : document.getElementById("home-page"),
+  aboutMeField : document.getElementById("about-me"),
   getElementLabel : function(field) {
     var label = field.parentNode.parentNode.querySelector("label").textContent;
     return label;
@@ -34,7 +35,7 @@ function isEmptyField(field, event) {
 function isValidField(patternToMatch, field, event) {
   var fieldName = form.getElementLabel(field);
   var errorMessage = "Please enter correct " + fieldName + "!";
-  if(!patternToMatch.test(field.value)) {
+  if (!patternToMatch.test(field.value)) {
     return outputError(field, errorMessage, event);
   }
   return true;
@@ -58,16 +59,14 @@ function FormValidation(form) {
     if(!isValidField(patterns.urlPattern, form.homePageField, event)) {
       return false;
     }
-    //Get textarea
-    var textArea = form.formRoot.querySelector("textarea");
     //Define Minimum Textarea Length, Textarea Name and Error Messages
-    var textAreaName = form.getElementLabel(textArea);
+    var textAreaName = form.getElementLabel(form.aboutMeField);
     var minLength = 50, minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.", blankInputMessage = textAreaName + " cannot be empty or blank.";
-    if (textArea.value.trim() == "") {
-      return outputError(textArea, blankInputMessage, event);
+    if (form.aboutMeField.value.trim() == "") {
+      return outputError(form.aboutMeField, blankInputMessage, event);
     }
-    if (textArea.value.length < minLength) {
-      return outputError(textArea, minLengthMessage, event);
+    if (form.aboutMeField.value.length < minLength) {
+      return outputError(form.aboutMeField, minLengthMessage, event);
     }
     //Check receive notifications
     var doOrDont = form.notificationsElement.checked ? "" : "don\'t ";
