@@ -1,56 +1,50 @@
+//JSON of users
+users = '[{"name":"Luigi Damiano"}, {"name":"Zenith Coboro"}, {"name":"Zig Ziglar"}, {"name":"Steve Costner"}, {"name":"Bill Grazer"}, {"name":"Timothy Frazer"}, {"name":"Boris Becker"}, {"name":"Glenn Gladwich"}, {"name":"Jim Jackson"}, {"name":"Aaron Kabin"}, {"name":"Roy Goldwin"}, {"name":"Jason Goldberg"}, {"name":"Tim Ferris"}, {"name":"Buck Singham"}, {"name":"Malcom Gladwell"}, {"name":"Joy Rabura"}, {"name":"Vid Luther"}, {"name":"Tom Glicken"}, {"name":"Ray Baxter"}, {"name":"Ari Kama"}, {"name":"Kenichi Suzuki"}, {"name":"Rick Olson"}]';
+//Form Elements
 var form = {
   formRoot : document.getElementById("autocomplete-form"),
-  nameField : document.getElementById("name")
+  nameField : document.getElementById("name"),
+  suggestionList : document.querySelector(".suggestion-list")
 };
-/*
-function createXHR() {
-  if(typeof XMLHttpRequest != "undefined") {
-    return new XMLHttpRequest();
-  } else if(typeof ActiveXObject != "undefined") {
-    if(typeof arguments.callee.activeXString != "string") {
-      var versions = ["MSXML2.XMLHttp.6.0", "MSXML2.XMLHttp.3.0", "MSXML2.XMLHttp"],i,len;
-      for(i=0,len=versions.length;i<len;i++) {
-        try {
-          new ActiveXObject(versions[i]);
-          arguments.callee.activeXString = versions[i];
-          break;
-        } catch(ex) {
-          //skip
-        }
-      }
-    }
-    return new ActiveXObject(arguments.callee.activeXString);
-  } else {
-    throw new Error("No XHR Object Available");
-  }
-}
-*/
-
-function JsonAutocompleter(form) {
+//Text Autocompleter class
+function TextAutocompleter(form) {
   this.form = form;
-  this.autocompleteText = function(e) {
-    var usersCopy = JSON.parse(users, function(key,value) {
-      return value;
-    });
-    alert(usersCopy);
-
-/*    var xhr = createXHR();
-//    var displayList = form.nameField.parentNode.appendChild(document.createElement("ul"));
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState == 4) {
-        if(xhr.status >=200 && xhr.status < 300 || xhr.status == 304) {
-          alert(xhr.responseText);
-        } else {
-          alert("Request was unsuccessful : " + xhr.status);
+  //To hide autosuggest field when clicked anywhere else on the document other than the name field or autosuggest list
+  this.hideSuggestionField = function(e) {
+    form.suggestionList.innerHTML = "";
+    form.suggestionList.setAttribute("style", "border:none;");
+  }
+  //To autofill the text field when clicked on an option in the list
+  this.autoFillText = function(e) {
+    form.nameField.value = e.target.innerHTML;
+    form.nameField.focus();
+  }
+  //To auto-suggest Text
+  this.autoSuggestText = function(e) {
+    var usersCopy = JSON.parse(users), stringToCompare = document.getElementById("name").value, regexToMatch = new RegExp("^" + stringToCompare + "[a-z0-9\s]*","i"), countOfSuggestions = 0;
+    form.suggestionList.innerHTML = "";
+    form.suggestionList.setAttribute("style", "border:none;");
+    if(stringToCompare != "") {
+      for (i in usersCopy) {
+        if(usersCopy[i].name.match(regexToMatch) !== null && usersCopy[i].name.match(regexToMatch).length > 0) {
+          var newListElement = form.suggestionList.appendChild(document.createElement("li"));
+          newListElement.appendChild(document.createTextNode(usersCopy[i].name));
+          countOfSuggestions++;
         }
       }
     }
-    xhr.open("get","user.json",true);
-    xhr.send(null);
-*/
+    //Put border around list
+    if(countOfSuggestions > 0) {
+      form.suggestionList.setAttribute("style", "border:1px solid black;");
+    }
+    //Stop propagation so that document click event listener is not fired
+    e.stopPropagation();
   }
-  //Put a Form submit Event Listener
-  this.form.nameField.addEventListener("keyup", this.autocompleteText, false);
+  //Put Event Listeners for click and keyup events
+  this.form.nameField.addEventListener("keyup", this.autoSuggestText, false);
+  this.form.suggestionList.addEventListener("click", this.autoFillText, false);
+  this.form.nameField.addEventListener("click", this.autoSuggestText, false);
+  document.addEventListener("click", this.hideSuggestionField, false);
 }
 //Initialise the objects
-var textAutocompleter = new JsonAutocompleter(form);
+var nameAutocompleter = new TextAutocompleter(form);
