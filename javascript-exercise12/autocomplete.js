@@ -24,9 +24,9 @@ function TextAutocompleter(form) {
     var usersCopy = JSON.parse(users), stringToCompare = document.getElementById("name").value, regexToMatch = new RegExp("^" + stringToCompare + "[a-z0-9\s]*","i"), countOfSuggestions = 0;
     form.suggestionList.innerHTML = "";
     form.suggestionList.setAttribute("style", "border:none;");
-    if(stringToCompare != "") {
+    if (stringToCompare != "") {
       for (i in usersCopy) {
-        if(usersCopy[i].name.match(regexToMatch) !== null && usersCopy[i].name.match(regexToMatch).length > 0) {
+        if (usersCopy[i].name.match(regexToMatch) !== null && usersCopy[i].name.match(regexToMatch).length > 0) {
           var newListElement = form.suggestionList.appendChild(document.createElement("li"));
           newListElement.appendChild(document.createTextNode(usersCopy[i].name));
           countOfSuggestions++;
@@ -34,7 +34,7 @@ function TextAutocompleter(form) {
       }
     }
     //Put border around list
-    if(countOfSuggestions > 0) {
+    if (countOfSuggestions > 0) {
       form.suggestionList.setAttribute("style", "border:1px solid black;");
     }
     //Stop propagation so that document click event listener is not fired
