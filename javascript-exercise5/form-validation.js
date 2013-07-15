@@ -1,47 +1,60 @@
-var forms = {
-  formId : document.getElementById("registration"),
-  notifications : document.getElementById("notifications")
+var form = {
+  formRoot : document.getElementById("registration"),
+  notificationsElement : document.getElementById("notifications"),
+  aboutMeField : document.getElementById("about-me"),
+  getElementLabel : function(field) {
+    var label = field.parentNode.parentNode.querySelector("label").textContent;
+    return label;
+  }
 };
-
-function FormValidation(forms) {
-  this.forms = forms;
-  
-  this.FormChecker = function(e) {
+//To output error message
+function outputError(field, messageToOutput, event){
+  alert(messageToOutput);
+  field.focus();
+  event.preventDefault();
+  return false;
+}
+//To check if a form field is empty
+function isEmptyField(field, event) {
+  var fieldName = form.getElementLabel(field);
+  var trimmedFieldValue = field.value.trim();
+  var errorMessage = fieldName + " cannot be empty.";
+  if (field.value == "" || trimmedFieldValue == "") {
+    return !outputError(field, errorMessage, event);
+  }
+  return false;
+}
+//Form Validation class
+function FormValidation(form) {
+  this.form = form;
+  this.validateForm = function(event) {
     //Get all input text boxes
-    var elements = forms.formId.querySelectorAll("input[type='text'], input[type='email'], input[type='url']");
+    var elements = form.formRoot.querySelectorAll(".textinput");
     //Check each textbox to see if it's empty or not
     for (var i = 0, j = elements.length; i < j; i++) {
-      elementName = elements[i].parentNode.parentNode.querySelector("label").textContent;
-      if (elements[i].value == "") {
-        alert(elementName + " cannot be empty.");
-        elements[i].focus();
-        e.preventDefault();
+      if(isEmptyField(elements[i], event)) {
         return false;
       }
     }
-    //Get textarea
-    var textArea = forms.formId.querySelector("textarea");
-    //Textarea Length
-    var minLength = 50, minLengthMessage = "";
-    if (textArea.value.length < minLength) {
-      textAreaName = textArea.parentNode.parentNode.querySelector("label").textContent;
-      minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.";
-      alert(minLengthMessage);
-      textArea.focus();
-      e.preventDefault();
-      return false;
+    //Define Minimum Textarea Length, Textarea Name and Error Messages
+    var textAreaName = form.getElementLabel(form.aboutMeField);
+    var minLength = 50, minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.", blankInputMessage = textAreaName + " cannot be empty or blank.";
+    if (form.aboutMeField.value.trim() == "") {
+      return outputError(form.aboutMeField, blankInputMessage, event);
+    }
+    if (form.aboutMeField.value.length < minLength) {
+      return outputError(form.aboutMeField, minLengthMessage, event);
     }
     //Check receive notifications
-    var doOrDont = forms.notifications.checked ? "" : "don\'t ";
+    var doOrDont = form.notificationsElement.checked ? "" : "don\'t ";
     var confirmed = confirm("Are you sure you " + doOrDont + "want to receive notifications?");
     if (!confirmed) {
-      e.preventDefault();
+      event.preventDefault();
       return false;
     }
   }
   //Put a Form submit Event Listener
-  this.forms.formId.addEventListener("submit", this.FormChecker, false);
+  this.form.formRoot.addEventListener("submit", this.validateForm, false);
 }
-
 //Initialise the objects
-var contactFormValidation = new FormValidation(forms);
+var registrationFormValidation = new FormValidation(form);
