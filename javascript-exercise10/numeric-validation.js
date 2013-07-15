@@ -21,8 +21,8 @@ function NumericValidation(form) {
       form.resultField.value = true;
     }
   }
-  //Put a Form submit Event Listener
-  this.form.formRoot.addEventListener("submit", this.validateNumber, false);
 }
 //Initialise the objects
 var numericFormValidation = new NumericValidation(form);
+//Put a Form submit Event Listener
+numericFormValidation.form.formRoot.addEventListener("submit", numericFormValidation.validateNumber, false);
