@@ -1,0 +1,10 @@
+#grid {
+  width:500px;
+}
+
+#grid img {
+  float:left;
+  width:125px;
+  height:125px;
+}
+
