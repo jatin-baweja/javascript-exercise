@@ -9,6 +9,7 @@ var form = {
 //Text Autocompleter class
 function TextAutocompleter(form) {
   this.form = form;
+  var that = this;
   //To hide autosuggest field when clicked anywhere else on the document other than the name field or autosuggest list
   this.hideSuggestionField = function(e) {
     form.suggestionList.innerHTML = "";
@@ -19,23 +20,34 @@ function TextAutocompleter(form) {
     form.nameField.value = e.target.innerHTML;
     form.nameField.focus();
   }
+  //Display Matched Users List
+  this.displayUsers = function(matchedUsersArray) {
+    var userListFragment = document.createDocumentFragment();
+    for (var i in matchedUsersArray) {
+      var newListElement = userListFragment.appendChild(document.createElement("li"));
+      newListElement.appendChild(document.createTextNode(matchedUsersArray[i].name));
+    }
+    //Add Fragment to DOM
+    form.suggestionList.appendChild(userListFragment);
+    //Display border around list
+    form.suggestionList.setAttribute("style", "border:1px solid black;");
+  }
   //To auto-suggest Text
   this.autoSuggestText = function(e) {
-    var usersCopy = JSON.parse(users), stringToCompare = document.getElementById("name").value, regexToMatch = new RegExp("^" + stringToCompare + "[a-z0-9\s]*","i"), countOfSuggestions = 0;
+    var usersCopy = JSON.parse(users), stringToCompare = document.getElementById("name").value, regexToMatch = new RegExp("^" + stringToCompare + "[a-z0-9\s]*","i");
     form.suggestionList.innerHTML = "";
     form.suggestionList.setAttribute("style", "border:none;");
+    var matchedUsersArray = [];
     if (stringToCompare != "") {
       for (i in usersCopy) {
         if (usersCopy[i].name.match(regexToMatch) !== null && usersCopy[i].name.match(regexToMatch).length > 0) {
-          var newListElement = form.suggestionList.appendChild(document.createElement("li"));
-          newListElement.appendChild(document.createTextNode(usersCopy[i].name));
-          countOfSuggestions++;
+          matchedUsersArray.push(usersCopy[i]);
         }
       }
     }
-    //Put border around list
-    if (countOfSuggestions > 0) {
-      form.suggestionList.setAttribute("style", "border:1px solid black;");
+    //Display Users List if one or more name matches
+    if (matchedUsersArray.length > 0) {
+      that.displayUsers(matchedUsersArray);
     }
     //Stop propagation so that document click event listener is not fired
     e.stopPropagation();
