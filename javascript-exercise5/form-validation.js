@@ -1,60 +1,122 @@
-var form = {
-  formRoot : document.getElementById("registration"),
-  notificationsElement : document.getElementById("notifications"),
-  aboutMeField : document.getElementById("about-me"),
-  getElementLabel : function(field) {
-    var label = field.parentNode.parentNode.querySelector("label").textContent;
-    return label;
+function Validation(fieldId) {
+  this.field = document.getElementById(fieldId);
+  this.fieldType = this.field.tagName.toLowerCase();
+  if(this.field.getAttribute('type') != null)
+    this.fieldType += "[" + this.field.getAttribute('type') + "]";
+  this.fieldLabel = document.querySelector("label[for='" + fieldId + "']").textContent;
+  var validationScope = this;
+  //To check if a field is satisfying a condition
+  this.isSatisfyingCondition = function(propertyToCheck, constraint) {
+    switch (propertyToCheck) {
+      case "notempty" :
+        if (validationScope.isTextField()) {
+          return validationScope.isNotEmptyField();
+        }
+        break;
+      case "length" :
+        if (validationScope.isTextField()) {
+          return validationScope.hasMinimumLength(constraint);
+        }
+        break;
+      case "checked" :
+        if (validationScope.isCheckbox()) {
+          return validationScope.confirmChecked(constraint);
+        }
+        break;
+      default :
+        break;
+    }
   }
-};
-//To output error message
-function outputError(field, messageToOutput, event){
-  alert(messageToOutput);
-  field.focus();
-  event.preventDefault();
-  return false;
-}
-//To check if a form field is empty
-function isEmptyField(field, event) {
-  var fieldName = form.getElementLabel(field);
-  var trimmedFieldValue = field.value.trim();
-  var errorMessage = fieldName + " cannot be empty.";
-  if (field.value == "" || trimmedFieldValue == "") {
-    return !outputError(field, errorMessage, event);
+  //To check if given field is a Text Field
+  this.isCheckbox = function() {
+    if (validationScope.fieldType == "input[checkbox]") {
+      return true;
+    }
+    return false;
   }
-  return false;
-}
-//Form Validation class
-function FormValidation(form) {
-  this.form = form;
-  this.validateForm = function(event) {
-    //Get all input text boxes
-    var elements = form.formRoot.querySelectorAll(".textinput");
-    //Check each textbox to see if it's empty or not
-    for (var i = 0, j = elements.length; i < j; i++) {
-      if(isEmptyField(elements[i], event)) {
-        return false;
-      }
+  //To check if given field is a Text Field
+  this.isTextField = function() {
+    if (validationScope.fieldType == "input[text]"
+        || validationScope.fieldType == "input[email]"
+        || validationScope.fieldType == "input[url]"
+        || validationScope.fieldType == "textarea") {
+      return true;
     }
-    //Define Minimum Textarea Length, Textarea Name and Error Messages
-    var textAreaName = form.getElementLabel(form.aboutMeField);
-    var minLength = 50, minLengthMessage = "Minimum length of " + textAreaName + " should be " + minLength + " characters.", blankInputMessage = textAreaName + " cannot be empty or blank.";
-    if (form.aboutMeField.value.trim() == "") {
-      return outputError(form.aboutMeField, blankInputMessage, event);
+    return false;
+  }
+  //To check if a checkbox is checked or not
+  this.isChecked = function() {
+    if (validationScope.isCheckbox()) {
+      return validationScope.field.checked;
     }
-    if (form.aboutMeField.value.length < minLength) {
-      return outputError(form.aboutMeField, minLengthMessage, event);
+    return false;
+  }
+  //To check if a field is empty or not
+  this.isNotEmptyField = function() {
+    var trimmedFieldValue = validationScope.field.value.trim();
+    var errorMessage = validationScope.fieldLabel + " cannot be empty.";
+    if (validationScope.field.value == "" || trimmedFieldValue == "") {
+      validationScope.outputError(errorMessage);
+      return false;
     }
-    //Check receive notifications
-    var doOrDont = form.notificationsElement.checked ? "" : "don\'t ";
-    var confirmed = confirm("Are you sure you " + doOrDont + "want to receive notifications?");
+    return true;
+  }
+  //To check if the length of a field is greater than a certain value
+  this.hasMinimumLength = function(length) {
+    var fieldValue = validationScope.field.value;
+    var errorMessage = validationScope.fieldLabel + " should be minimum " + length + " characters.";
+    if (fieldValue.length < length) {
+      validationScope.outputError(errorMessage);
+      return false;
+    }
+    return true;
+  }
+  //To confirm whether a user has or has not clicked on a form
+  this.confirmChecked = function(confirmMessage) {
+    var confirmed = confirm(confirmMessage);
     if (!confirmed) {
+      return false;
+    }
+    return true;
+  }
+  //To output error
+  this.outputError = function(messageToOutput) {
+    alert(messageToOutput);
+    validationScope.field.focus();
+  }
+}
+//Define the variables for which validation is required
+var notificationValidation = new Validation("notifications");
+var aboutMeValidation = new Validation("about-me");
+var textfields = document.querySelectorAll('.textinput');
+var textfieldsValidation = [];
+for (var i = 0; i < textfields.length; i++) {
+  textfieldsValidation[i] = new Validation(textfields[i].id);
+}
+//To validate the Registration Form
+function validateRegistrationForm(event) {
+  //Validate whether textfields are empty or not
+  for (var i = 0; i < textfields.length; i++) {
+    if (!textfieldsValidation[i].isSatisfyingCondition("notempty")) {
       event.preventDefault();
       return false;
     }
   }
-  //Put a Form submit Event Listener
-  this.form.formRoot.addEventListener("submit", this.validateForm, false);
+  //Validate Length of About Me Textarea
+  if (!aboutMeValidation.isSatisfyingCondition("length", 50)) {
+    event.preventDefault();
+    return false;
+  }
+  //Validate whether user wants to recieve notifications or not
+  var doOrDont = " don\'t";
+  if (notificationValidation.isChecked()) {
+    doOrDont = "";
+  }
+  var notificationsMessage = "Are you sure you" + doOrDont + " want to recieve notifications?";
+  if (!notificationValidation.isSatisfyingCondition("checked", notificationsMessage)) {
+    event.preventDefault();
+    return false;
+  }
 }
-//Initialise the objects
-var registrationFormValidation = new FormValidation(form);
+//Add event listener to the Registration form
+document.getElementById('registration').addEventListener('submit', validateRegistrationForm, false);
