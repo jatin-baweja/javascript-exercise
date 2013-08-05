@@ -1,89 +1,78 @@
 function Validation(fieldId) {
+  //Variables required for each instance
   this.field = document.getElementById(fieldId);
   this.fieldType = this.field.tagName.toLowerCase();
   if(this.field.getAttribute('type') != null)
     this.fieldType += "[" + this.field.getAttribute('type') + "]";
   this.fieldLabel = document.querySelector("label[for='" + fieldId + "']").textContent;
-  var validationScope = this;
-  //To check if a field is satisfying a condition
-  this.isSatisfyingCondition = function(propertyToCheck, constraint) {
-    switch (propertyToCheck) {
-      case "notempty" :
-        if (validationScope.isTextField()) {
-          return validationScope.isNotEmptyField();
-        }
-        break;
-      case "length" :
-        if (validationScope.isTextField()) {
-          return validationScope.hasMinimumLength(constraint);
-        }
-        break;
-      case "checked" :
-        if (validationScope.isCheckbox()) {
-          return validationScope.confirmChecked(constraint);
-        }
-        break;
-      default :
-        break;
-    }
+}
+//To check if a field is satisfying a condition
+Validation.prototype.isSatisfyingCondition = function(propertyToCheck, constraint) {
+  switch (propertyToCheck) {
+    case "notempty" :
+      if (this.isTextField()) {
+        return this.isNotEmptyField();
+      }
+      break;
+    case "length" :
+      if (this.isTextField()) {
+        return this.hasMinimumLength(constraint);
+      }
+      break;
+    case "checked" :
+      if (this.isCheckbox()) {
+        return this.confirmChecked(constraint);
+      }
+      break;
+    default :
+      break;
   }
-  //To check if given field is a Text Field
-  this.isCheckbox = function() {
-    if (validationScope.fieldType == "input[checkbox]") {
-      return true;
-    }
+}
+//To check if given field is a Text Field
+Validation.prototype.isCheckbox = function() {
+  return this.fieldType == "input[checkbox]";
+}
+//To check if given field is a Text Field
+Validation.prototype.isTextField = function() {
+  return this.fieldType == "input[text]"
+    || this.fieldType == "input[email]"
+    || this.fieldType == "input[url]"
+    || this.fieldType == "textarea";
+}
+//To check if a checkbox is checked or not
+Validation.prototype.isChecked = function() {
+  return this.isCheckbox()
+    && this.field.checked;
+}
+//To check if a field is empty or not
+Validation.prototype.isNotEmptyField = function() {
+  var trimmedFieldValue = this.field.value.trim();
+  var errorMessage = this.fieldLabel + " cannot be empty.";
+  if (this.field.value == "" || trimmedFieldValue == "") {
+    this.outputError(errorMessage);
     return false;
   }
-  //To check if given field is a Text Field
-  this.isTextField = function() {
-    if (validationScope.fieldType == "input[text]"
-        || validationScope.fieldType == "input[email]"
-        || validationScope.fieldType == "input[url]"
-        || validationScope.fieldType == "textarea") {
-      return true;
-    }
+  return true;
+}
+//To check if the length of a field is greater than a certain value
+Validation.prototype.hasMinimumLength = function(length) {
+  var fieldValue = this.field.value;
+  var errorMessage = this.fieldLabel + " should be minimum " + length + " characters.";
+  if (fieldValue.length < length) {
+    this.outputError(errorMessage);
     return false;
   }
-  //To check if a checkbox is checked or not
-  this.isChecked = function() {
-    if (validationScope.isCheckbox()) {
-      return validationScope.field.checked;
-    }
-    return false;
-  }
-  //To check if a field is empty or not
-  this.isNotEmptyField = function() {
-    var trimmedFieldValue = validationScope.field.value.trim();
-    var errorMessage = validationScope.fieldLabel + " cannot be empty.";
-    if (validationScope.field.value == "" || trimmedFieldValue == "") {
-      validationScope.outputError(errorMessage);
-      return false;
-    }
-    return true;
-  }
-  //To check if the length of a field is greater than a certain value
-  this.hasMinimumLength = function(length) {
-    var fieldValue = validationScope.field.value;
-    var errorMessage = validationScope.fieldLabel + " should be minimum " + length + " characters.";
-    if (fieldValue.length < length) {
-      validationScope.outputError(errorMessage);
-      return false;
-    }
-    return true;
-  }
-  //To confirm whether a user has or has not clicked on a form
-  this.confirmChecked = function(confirmMessage) {
-    var confirmed = confirm(confirmMessage);
-    if (!confirmed) {
-      return false;
-    }
-    return true;
-  }
-  //To output error
-  this.outputError = function(messageToOutput) {
-    alert(messageToOutput);
-    validationScope.field.focus();
-  }
+  return true;
+}
+//To confirm whether a user has or has not clicked on a form Checkbox
+Validation.prototype.confirmChecked = function(confirmMessage) {
+  var confirmed = confirm(confirmMessage);
+  return confirmed;
+}
+//To output error
+Validation.prototype.outputError = function(messageToOutput) {
+  alert(messageToOutput);
+  this.field.focus();
 }
 //Define the variables for which validation is required
 var notificationValidation = new Validation("notifications");
